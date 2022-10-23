@@ -48,6 +48,7 @@ with open(file_to_load) as election_data:
 winning_candidate = ""
 winning_count = 0
 winning_percent = 0.0
+candidate_results = ""
 
 for candidate_name in candidate_votes:
 
@@ -55,14 +56,14 @@ for candidate_name in candidate_votes:
     
     vote_percentage = float(votes) / float(total_votes) * 100
    
-    print(f"{candidate_name}: {vote_percentage:.1f}% ({votes:,})\n")
+    candidate_results += (f"{candidate_name}: {vote_percentage:.1f}% ({votes:,})\n")
 
     if (votes > winning_count) and (vote_percentage > winning_percent):
         winning_count = votes
         winning_percent = vote_percentage
         winning_candidate = candidate_name
 
-
+print(candidate_results)
 winning_candidate_summary = (
     f"-------------------------\n"
     f"Winner: {winning_candidate}\n"
@@ -70,3 +71,16 @@ winning_candidate_summary = (
     f"Winning Percentage: {winning_percent:.1f}%\n"
     f"-------------------------\n")
 print(winning_candidate_summary)
+
+with open(file_to_save, "w") as txt_file:
+    election_results = (
+        f"\nElection Results\n"
+        f"---------------------------\n"
+        f"Total Votes: {total_votes:,}\n"
+        f"---------------------------\n")
+    
+    print(election_results, end = "")
+
+    txt_file.write(election_results)
+    txt_file.write(candidate_results)
+    txt_file.write(winning_candidate_summary)
